@@ -173,8 +173,6 @@ Adafruit_NeoPixel pixels(30, 12, NEO_GRB + NEO_KHZ800); // define neopixel (12 =
 
 // boot function
 void setup() {
-    Serial.begin(9600);
-
     pixels.begin();
     pixels.setBrightness(50);
 
@@ -594,7 +592,6 @@ void pumpItUp(String drinkName, double shot, double mixy) {
         if (globalflag) {
             if (shotTime > 0) drinksCounter[getDrinknumberFromDrinkname(drinkName)]++;
             String counterString = "Counter = " + (String(drinksCounter[getDrinknumberFromDrinkname(drinkName)]));
-            Serial.println(counterString);
             wttd("-> " + drinkName, 0, 0, counterString, 1, 0);
             delay(3200);
             wttd("-> Returning", 0, 2, "to main menu", 1, 2);
@@ -604,7 +601,6 @@ void pumpItUp(String drinkName, double shot, double mixy) {
             menulvl = 0;
         }
     }
-
 }
 
 int getShotPump(String drinkName) {
