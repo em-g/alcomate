@@ -8,7 +8,9 @@
 
 // library imports
 #include <LiquidCrystal.h>
+
 #include <SimpleRotary.h>
+
 #include <Adafruit_NeoPixel.h>
 
 // declaring pumps 
@@ -52,10 +54,14 @@ String drinks[] = {
   "Wodka Energy",
   "Malibu Maracuja",
   "Gin Tonic",
+  "Smokey Martini",
+  "Cuba Libre",
   backCommando
 };
 
 int drinksCounter[] = {
+  0,
+  0,
   0,
   0,
   0
@@ -78,17 +84,32 @@ double pspeed = 8.4; // 8.4ml in 1sec ---> 500ml in 1min
 
 static String chosenSetting;
 static String chosenDrink;
-static int    chosenMixtureRelation;
-static int    chosenOption;
-static int    chosenPump;
-static int    originalChosenOption;
-static bool   globalflag = true;
-byte          buttonPushed;
-byte          buttonPushType;
-byte          cancelPushed;
-bool          cancelflag = false;
-bool check[15] = {true, true, true, true, true, true, true, true, true, true, true, true, true, true, true};
-
+static int chosenMixtureRelation;
+static int chosenOption;
+static int chosenPump;
+static int originalChosenOption;
+static bool globalflag = true;
+byte buttonPushed;
+byte buttonPushType;
+byte cancelPushed;
+bool cancelflag = false;
+bool check[15] = {
+  true,
+  true,
+  true,
+  true,
+  true,
+  true,
+  true,
+  true,
+  true,
+  true,
+  true,
+  true,
+  true,
+  true,
+  true
+};
 
 String mixRel[] = {
   "0%",
@@ -109,11 +130,14 @@ String settings[] = {
   backCommando
 };
 String fluids[] = {
+  "Cola",
   "Energy",
   "Gin",
   "Malibu",
   "Maracuja",
+  "Rum",
   "Tonic",
+  "Whisky",
   "Wodka",
   backCommando
 };
@@ -129,16 +153,16 @@ int mixRelInts[] = {
 // global variables
 
 int rotDet;
-int menulvl             = 0;
-int sizeOfGlass         = 245;
-int amountOfPumps       = sizeof(pumpsettings) / sizeof(pumpsettings[0]);
-int amountOfDrinks      = sizeof(drinks) / sizeof(drinks[0]);
-int amountOfMixRel      = sizeof(mixRel) / sizeof(mixRel[0]);
-int amountOfSettings    = sizeof(settings) / sizeof(settings[0]);
-int amountOfFluids      = sizeof(fluids) / sizeof(fluids[0]);
+int menulvl = 0;
+int sizeOfGlass = 245;
+int amountOfPumps = sizeof(pumpsettings) / sizeof(pumpsettings[0]);
+int amountOfDrinks = sizeof(drinks) / sizeof(drinks[0]);
+int amountOfMixRel = sizeof(mixRel) / sizeof(mixRel[0]);
+int amountOfSettings = sizeof(settings) / sizeof(settings[0]);
+int amountOfFluids = sizeof(fluids) / sizeof(fluids[0]);
 int amountOfPumpContent = sizeof(pumpContent) / sizeof(pumpContent[0]);
-int amountOfChecks      = sizeof(check) / sizeof (check[0]);
-double smallDoseAmount  = 200;
+int amountOfChecks = sizeof(check) / sizeof(check[0]);
+double smallDoseAmount = 200;
 
 // hardware start
 LiquidCrystal lcd(5, 6, 7, 8, 9, 10);
@@ -148,7 +172,7 @@ Adafruit_NeoPixel pixels(30, 12, NEO_GRB + NEO_KHZ800); // define neopixel (12 =
 // boot function
 void setup() {
   Serial.begin(9600);
-  
+
   pixels.begin();
   pixels.setBrightness(50);
 
@@ -268,7 +292,7 @@ void drinkSelected() {
       globalflag = false;
       smallDose("mix", getMixPump(chosenDrink), smallDoseAmount);
     } else if (mixRel[chosenOption] == liquor) {
-      globalflag = false;  
+      globalflag = false;
       smallDose("shot", getShotPump(chosenDrink), smallDoseAmount);
     } else if ((mixRel[chosenOption] != mixer) && (mixRel[chosenOption] != liquor)) { // Array Element in der Mixverhältnisliste
       globalflag = true;
@@ -384,7 +408,7 @@ void setPump() {
       menulvl = 91;
       chosenOption = 0;
     } else {
-      pumpContent[chosenPump -1] = fluids[chosenOption];
+      pumpContent[chosenPump - 1] = fluids[chosenOption];
       wttd(pumpsettings[chosenPump - 1], 0, 0, "= " + fluids[chosenOption] + " *", 1, 0);
       delay(1500);
       wttd("PUMPSETTINGS", 0, 2, "-> " + pumpsettings[0], 1, 0);
@@ -533,7 +557,7 @@ void pumpItUp(String drinkName, double shot, double mixy) {
     delay(600);
     pumpDos(shotPump, mixPump, shotTime, mixyTime);
     if (globalflag) {
-      if(shotTime > 0) drinksCounter[getDrinknumberFromDrinkname(drinkName)]++;
+      if (shotTime > 0) drinksCounter[getDrinknumberFromDrinkname(drinkName)]++;
       String counterString = "Counter = " + (String(drinksCounter[getDrinknumberFromDrinkname(drinkName)]));
       Serial.println(counterString);
       wttd("-> " + drinkName, 0, 0, counterString, 1, 0);
@@ -553,18 +577,18 @@ int getShotPump(String drinkName) {
 
   if (drinkName == drinks[0]) {
     for (int i = 0; i < amountOfPumpContent; i++) {
-      if (pumpContent[i] == "Wodka") shotPump = i+1;
+      if (pumpContent[i] == "Wodka") shotPump = i + 1;
     }
 
   }
   if (drinkName == drinks[1]) {
     for (int i = 0; i <= amountOfPumpContent; i++) {
-      if (pumpContent[i] == "Malibu") shotPump = i+1;
+      if (pumpContent[i] == "Malibu") shotPump = i + 1;
     }
   }
   if (drinkName == drinks[2]) {
     for (int i = 0; i <= amountOfPumpContent; i++) {
-      if (pumpContent[i] == "Gin") shotPump = i+1;
+      if (pumpContent[i] == "Gin") shotPump = i + 1;
     }
   }
   return shotPump;
@@ -574,25 +598,25 @@ int getMixPump(String drinkName) {
   int mixPump = -1;
   if (drinkName == drinks[0]) {
     for (int i = 0; i < amountOfPumpContent; i++) {
-      if (pumpContent[i] == "Energy") mixPump = i+1;
+      if (pumpContent[i] == "Energy") mixPump = i + 1;
     }
 
   }
   if (drinkName == drinks[1]) {
     for (int i = 0; i <= amountOfPumpContent; i++) {
-      if (pumpContent[i] == "Maracuja") mixPump = i+1;
+      if (pumpContent[i] == "Maracuja") mixPump = i + 1;
     }
   }
   if (drinkName == drinks[2]) {
     for (int i = 0; i <= amountOfPumpContent; i++) {
-      if (pumpContent[i] == "Tonic") mixPump = i+1;
+      if (pumpContent[i] == "Tonic") mixPump = i + 1;
     }
   }
   return mixPump;
 }
 
 void pumpDos(int shotPump, int mixPump, double shotDelay, double mixDelay) {
-  for(int i = 0; i < amountOfChecks; i++) check[i] = true;
+  for (int i = 0; i < amountOfChecks; i++) check[i] = true;
   wttd("Please wait OR", 0, 1, "CANCEL PROCESS!", 1, 1);
   delay(1000);
   lcd.clear();
@@ -601,11 +625,11 @@ void pumpDos(int shotPump, int mixPump, double shotDelay, double mixDelay) {
   double actualTime = millis(); // now based on runtime
   double endtime = actualTime + shotDelay;
   double delayTime = mixDelay - shotDelay;
-  
-  double totalTime = (sizeOfGlass - ((shotDelay/1000)*pspeed))/pspeed;
-  double progressBarStep = totalTime*1000 / 14;
-  
-  while(actualTime < endtime){
+
+  double totalTime = (sizeOfGlass - ((shotDelay / 1000) * pspeed)) / pspeed;
+  double progressBarStep = totalTime * 1000 / 14;
+
+  while (actualTime < endtime) {
     actualTime = millis();
     cancelPushed = rotary.push();
     if (cancelPushed == 1) {
@@ -615,17 +639,16 @@ void pumpDos(int shotPump, int mixPump, double shotDelay, double mixDelay) {
       if (shotPump == 4) digitalWrite(pump4[1], LOW);
       cancelflag = true;
       break;
-    }
-    else{
-      lcdLevelIndicator(actualTime-starttime, progressBarStep);
-      if (shotPump == 1) digitalWrite(pump1[1], LOW);
-      if (shotPump == 2) digitalWrite(pump2[1], LOW);
-      if (shotPump == 3) digitalWrite(pump3[1], LOW);
-      if (shotPump == 4) digitalWrite(pump4[1], LOW);
-      if (mixPump == 1) digitalWrite(pump1[1], LOW);
-      if (mixPump == 2) digitalWrite(pump2[1], LOW);
-      if (mixPump == 3) digitalWrite(pump3[1], LOW);
-      if (mixPump == 4) digitalWrite(pump4[1], LOW);
+    } else {
+      lcdLevelIndicator(actualTime - starttime, progressBarStep);
+      if (shotPump == 1) digitalWrite(pump1[1], HIGH);
+      if (shotPump == 2) digitalWrite(pump2[1], HIGH);
+      if (shotPump == 3) digitalWrite(pump3[1], HIGH);
+      if (shotPump == 4) digitalWrite(pump4[1], HIGH);
+      if (mixPump == 1) digitalWrite(pump1[1], HIGH);
+      if (mixPump == 2) digitalWrite(pump2[1], HIGH);
+      if (mixPump == 3) digitalWrite(pump3[1], HIGH);
+      if (mixPump == 4) digitalWrite(pump4[1], HIGH);
     }
   }
   if (shotPump == 1) digitalWrite(pump1[1], LOW);
@@ -634,17 +657,17 @@ void pumpDos(int shotPump, int mixPump, double shotDelay, double mixDelay) {
   if (shotPump == 4) digitalWrite(pump4[1], LOW);
 
   actualTime = millis();
-  double globalendtime = actualTime+delayTime;
+  double globalendtime = actualTime + delayTime;
 
-  if (mixPump == 1) digitalWrite(pump1[1], LOW);
-  if (mixPump == 2) digitalWrite(pump2[1], LOW);
-  if (mixPump == 3) digitalWrite(pump3[1], LOW);
-  if (mixPump == 4) digitalWrite(pump4[1], LOW);
-  while((actualTime < globalendtime) && !cancelflag){
+  if (mixPump == 1) digitalWrite(pump1[1], HIGH);
+  if (mixPump == 2) digitalWrite(pump2[1], HIGH);
+  if (mixPump == 3) digitalWrite(pump3[1], HIGH);
+  if (mixPump == 4) digitalWrite(pump4[1], HIGH);
+  while ((actualTime < globalendtime) && !cancelflag) {
     actualTime = millis();
     cancelPushed = rotary.push();
-    lcdLevelIndicator(actualTime-starttime, progressBarStep);
-    
+    lcdLevelIndicator(actualTime - starttime, progressBarStep);
+
     if (cancelPushed == 1) break;
   }
   if (mixPump == 1) digitalWrite(pump1[1], LOW);
@@ -653,65 +676,50 @@ void pumpDos(int shotPump, int mixPump, double shotDelay, double mixDelay) {
   if (mixPump == 4) digitalWrite(pump4[1], LOW);
 }
 
-void lcdLevelIndicator(double condition, double dot_param)
-{ 
-  if      ((condition > (13.5 * dot_param)) && check[14]){
+void lcdLevelIndicator(double condition, double dot_param) {
+  if ((condition > (13.5 * dot_param)) && check[14]) {
     wttd("|------------->|", 0, 0, "Press to cancel!", 1, 0);
     check[14] = false;
-  }
-  else if ((condition > (13 * dot_param)) && check[13]){         
+  } else if ((condition > (13 * dot_param)) && check[13]) {
     wttd("|------------> |", 0, 0, "Press to cancel!", 1, 0);
     check[13] = false;
-  }
-  else if ((condition > (12 * dot_param)) && check[12]){
+  } else if ((condition > (12 * dot_param)) && check[12]) {
     wttd("|----------->  |", 0, 0, "Press to cancel!", 1, 0);
     check[12] = false;
-  }
-  else if ((condition > (11 * dot_param)) && check[11]){
+  } else if ((condition > (11 * dot_param)) && check[11]) {
     wttd("|---------->   |", 0, 0, "Press to cancel!", 1, 0);
     check[11] = false;
-  }
-  else if ((condition > (10 * dot_param)) && check[10]){
+  } else if ((condition > (10 * dot_param)) && check[10]) {
     wttd("|--------->    |", 0, 0, "Press to cancel!", 1, 0);
     check[10] = false;
-  }
-  else if ((condition > (9 * dot_param)) && check[9]){
+  } else if ((condition > (9 * dot_param)) && check[9]) {
     wttd("|-------->     |", 0, 0, "Press to cancel!", 1, 0);
     check[9] = false;
-  }
-  else if ((condition > (8 * dot_param)) && check[8]){
+  } else if ((condition > (8 * dot_param)) && check[8]) {
     wttd("|------->      |", 0, 0, "Press to cancel!", 1, 0);
     check[8] = false;
-  }
-  else if ((condition > (7 * dot_param)) && check[7]){
+  } else if ((condition > (7 * dot_param)) && check[7]) {
     wttd("|------>       |", 0, 0, "Press to cancel!", 1, 0);
     check[7] = false;
-  }
-  else if ((condition > (6 * dot_param)) && check[6]){
+  } else if ((condition > (6 * dot_param)) && check[6]) {
     wttd("|----->        |", 0, 0, "Press to cancel!", 1, 0);
     check[6] = false;
-  }
-  else if ((condition > (5 * dot_param)) && check[5]){
+  } else if ((condition > (5 * dot_param)) && check[5]) {
     wttd("|---->         |", 0, 0, "Press to cancel!", 1, 0);
     check[5] = false;
-  }
-  else if ((condition > (4 * dot_param)) && check[4]){
+  } else if ((condition > (4 * dot_param)) && check[4]) {
     wttd("|--->          |", 0, 0, "Press to cancel!", 1, 0);
     check[4] = false;
-  }
-  else if ((condition > (3 * dot_param)) && check[3]){
+  } else if ((condition > (3 * dot_param)) && check[3]) {
     wttd("|-->           |", 0, 0, "Press to cancel!", 1, 0);
     check[3] = false;
-  }
-  else if ((condition > (2 * dot_param)) && check[2]){
+  } else if ((condition > (2 * dot_param)) && check[2]) {
     wttd("|->            |", 0, 0, "Press to cancel!", 1, 0);
     check[2] = false;
-  }
-  else if ((condition > (1 * dot_param)) && check[1]){
+  } else if ((condition > (1 * dot_param)) && check[1]) {
     wttd("|>             |", 0, 0, "Press to cancel!", 1, 0);
     check[1] = false;
-  }
-  else if ((condition < (1 * dot_param)) && check[0]){
+  } else if ((condition < (1 * dot_param)) && check[0]) {
     wttd("|              |", 0, 0, "Press to cancel!", 1, 0);
     check[0] = false;
   }
@@ -771,8 +779,8 @@ uint32_t Wheel(byte WheelPos) {
 // -----------------------------------------------------  HELPING FUNCTIONS ------------------------------------------------------
 // -----------------------------------------------------------ARDUINO-------------------------------------------------------------
 
-int getDrinknumberFromDrinkname(String drinkName){
-  for(int i=0; i<amountOfDrinks; i++){
-    if(drinks[i] == drinkName) return i;
+int getDrinknumberFromDrinkname(String drinkName) {
+  for (int i = 0; i < amountOfDrinks; i++) {
+    if (drinks[i] == drinkName) return i;
   }
 }
