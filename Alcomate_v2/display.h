@@ -31,6 +31,7 @@ void wttd(String line1, int pos1y, int pos1x, int line2, int pos2y, int pos2x) {
 
 void drinkNotConfigured(String drinkName) {
   wttd("-> " + drinkName, 0, centerX("-> " + drinkName), "not configured", 1, 1);
+  pulse(255, 0, 0);
   delay(2000);
 }
 

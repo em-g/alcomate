@@ -85,7 +85,6 @@ void drinkSelected() {
       smallDose("shot", getShotPump(chosenDrink), smallDoseAmount);
     } else if ((mixRel[chosenOption] != mixer) && (mixRel[chosenOption] != liquor)) {
       globalflag = true;
-      shortPulse(0, 255, 0);
       delay(300);
       drinkAndRelMixSelected(chosenDrink, chosenOption);
       chosenOption = 0;

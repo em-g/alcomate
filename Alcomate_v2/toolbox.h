@@ -151,6 +151,7 @@ void pumpItUp(String drinkName, double shot, double mixy) {
       if ((shotTime > 0) && !cancelflag) drinksCounter[getDrinknumberFromDrinkname(drinkName)]++;
       String counterString = "Counter = " + (String(drinksCounter[getDrinknumberFromDrinkname(drinkName)]));
       wttd("-> " + drinkName, 0, 0, counterString, 1, 0);
+      pulse(0, 255, 0);
       delay(3200);
       wttd("-> Returning", 0, centerX("-> Returning"), "to main menu", 1, centerX("to main menu"));
       delay(1000);
