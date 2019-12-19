@@ -8,17 +8,17 @@
 
 // imports
 #include "defines.h"
+
 #include "leds.h"
+
 #include "main_menu.h"
+
 #include "settings_menu.h"
 
 int ledI = 0;
 void setup() {
-  // pull voltage level of pumps down to LOW (0V)
   pulldown();
-  // init display
   initDisplay();
-  // init LED strip
   ledstrip();
 }
 

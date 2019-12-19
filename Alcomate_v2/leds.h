@@ -1,3 +1,7 @@
+// -------------------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------  HELPING FUNCTIONS ------------------------------------------------------
+// -------------------------------------------------------------LEDS--------------------------------------------------------------
+
 #include <Adafruit_NeoPixel.h>
 
 
@@ -7,12 +11,7 @@ static int pix = 0;
 static bool up = false;
 static bool down = true;
 
-
-Adafruit_NeoPixel pixels(9, 12, NEO_RGB + NEO_KHZ800); // define neopixel (12 = digital_in) amount=30 delay = 500
-
-// -------------------------------------------------------------------------------------------------------------------------------
-// -----------------------------------------------------  HELPING FUNCTIONS ------------------------------------------------------
-// -------------------------------------------------------------LEDS--------------------------------------------------------------
+Adafruit_NeoPixel pixels(9, 12, NEO_RGB + NEO_KHZ800);
 
 uint32_t Wheel(byte WheelPos) {
   WheelPos = 255 - WheelPos;
@@ -30,7 +29,7 @@ uint32_t Wheel(byte WheelPos) {
 void rainbowCycle(uint8_t wait) {
   uint16_t i, j;
 
-  for (j = 0; j < 256 * 1; j++) { // 5 cycles of all colors on wheel
+  for (j = 0; j < 256 * 1; j++) {
     for (i = 0; i < pixels.numPixels(); i++) {
       pixels.setPixelColor(i, Wheel(((i * 256 / pixels.numPixels()) + j) & 255));
     }
@@ -40,17 +39,16 @@ void rainbowCycle(uint8_t wait) {
 }
 
 void colorWipe(uint32_t color, int wait) {
-  for (int i = 0; i < pixels.numPixels(); i++) { // For each pixel in strip...
-    pixels.setPixelColor(i, color);         //  Set pixel's color (in RAM)
-    pixels.show();                          //  Update strip to match
-    delay(wait);                           //  Pause for a moment
+  for (int i = 0; i < pixels.numPixels(); i++) {
+    pixels.setPixelColor(i, color);
+    pixels.show();
+    delay(wait);
   }
 }
 
 void ledstrip() {
   pixels.begin();
   pixels.setBrightness(100);
-  //rainbowCycle(0);
 }
 
 void colorFlow() {
@@ -65,7 +63,6 @@ void colorFlow() {
   } else {
     i++;
   }
-
 
   delay(10);
   pixels.setPixelColor(i, Wheel((i + j) & 255));
@@ -85,8 +82,7 @@ void pulse(int r, int g, int b) {
   if (down && !up) br--;
   delay(10);
 
-  for (int pix = 0; pix < pixels.numPixels(); pix++)
-  {
+  for (int pix = 0; pix < pixels.numPixels(); pix++) {
     pixels.setPixelColor(pix, b, r, g);
   }
 

@@ -7,7 +7,6 @@
 void startMenu() {
   colorFlow();
   buttonPushType = rotary.pushType(1500);
-  //delay(100);
   if (buttonPushType == 2) {
     wttd(welcomeLine, 0, centerX(welcomeLine), "-> Settings (3)", 1, 0);
     delay(400);
@@ -57,7 +56,7 @@ void drinkMenu() {
 }
 
 void drinkSelected() {
-  pulse(0,0,255);
+  pulse(0, 0, 255);
   int lengthDrinkString = (maxX - chosenDrink.length()) / 2;
   rotDet = rotary.rotate();
   if ((rotDet == cw) && (chosenOption < (amountOfMixRel - 1))) {
@@ -71,7 +70,7 @@ void drinkSelected() {
   buttonPushed = rotary.push();
   if (buttonPushed == 1) {
     if (mixRel[chosenOption] == backCommando) {
-      shortPulse(255,0,0);
+      shortPulse(255, 0, 0);
       delay(300);
       menulvl = 1;
       chosenMixtureRelation = "";
@@ -84,12 +83,12 @@ void drinkSelected() {
     } else if (mixRel[chosenOption] == liquor) {
       globalflag = false;
       smallDose("shot", getShotPump(chosenDrink), smallDoseAmount);
-    } else if ((mixRel[chosenOption] != mixer) && (mixRel[chosenOption] != liquor)) { // Array Element in der Mixverhältnisliste
+    } else if ((mixRel[chosenOption] != mixer) && (mixRel[chosenOption] != liquor)) {
       globalflag = true;
-      shortPulse(0,255,0);
+      shortPulse(0, 255, 0);
       delay(300);
       drinkAndRelMixSelected(chosenDrink, chosenOption);
-      chosenOption = 0; // Name des Drinks
+      chosenOption = 0;
     }
   }
 }

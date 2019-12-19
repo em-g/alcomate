@@ -4,39 +4,37 @@
 #include <LiquidCrystal_I2C.h>
 
 
-static int maxX                         = 20;
-static int maxY                         = 4;
+static int maxX = 20;
+static int maxY = 4;
 LiquidCrystal_I2C lcd(0x27, maxX, maxY);
 
-
-int centerX(String a){
-  int len = int((maxX - a.length())/2);
+int centerX(String a) {
+  int len = int((maxX - a.length()) / 2);
   return len;
 }
 
 void wttd(String line1, int pos1y, int pos1x, String line2, int pos2y, int pos2x) {
-    lcd.clear();
-    lcd.setCursor(pos1x, pos1y);
-    lcd.print(line1);
-    lcd.setCursor(pos2x, pos2y);
-    lcd.print(line2);
+  lcd.clear();
+  lcd.setCursor(pos1x, pos1y);
+  lcd.print(line1);
+  lcd.setCursor(pos2x, pos2y);
+  lcd.print(line2);
 }
 
 void wttd(String line1, int pos1y, int pos1x, int line2, int pos2y, int pos2x) {
-    lcd.clear();
-    lcd.setCursor(pos1x, pos1y);
-    lcd.print(line1);
-    lcd.setCursor(pos2x, pos2y);
-    lcd.print(line2);
+  lcd.clear();
+  lcd.setCursor(pos1x, pos1y);
+  lcd.print(line1);
+  lcd.setCursor(pos2x, pos2y);
+  lcd.print(line2);
 }
 
 void drinkNotConfigured(String drinkName) {
-    wttd("-> " + drinkName, 0, centerX("-> " + drinkName), "not configured", 1, 1);
-    delay(2000);
+  wttd("-> " + drinkName, 0, centerX("-> " + drinkName), "not configured", 1, 1);
+  delay(2000);
 }
 
-void initDisplay()
-{
+void initDisplay() {
   lcd.init();
   lcd.backlight();
   wttd(welcomeLine, 0, centerX(welcomeLine), "", 0, 0);

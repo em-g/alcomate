@@ -65,7 +65,7 @@ int getMixPump(String drinkName) {
 void pumpDos(int shotPump, int mixPump, double shotDelay, double mixDelay) {
   for (int i = 0; i < amountOfChecks; i++) check[i] = true;
   wttd("Please wait OR", 0, centerX("Please wait OR"), "CANCEL PROCESS!", 1, centerX("CANCEL PROCESS!"));
-  pulse(255,0,0);
+  pulse(255, 0, 0);
   delay(1000);
   lcd.clear();
 
