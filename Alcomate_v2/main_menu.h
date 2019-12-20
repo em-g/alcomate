@@ -5,12 +5,9 @@
 #include "toolbox.h"
 
 static int previousMillis = 0;
-static int textBlinkInterval = 1000;
-static bool textBlinkIntervalEnabledState = true;
 
 void startMenu() {
   int currentMillis = millis();
-  colorFlow();
 
   if(currentMillis - previousMillis >= textBlinkInterval){
     previousMillis = currentMillis;
@@ -25,9 +22,14 @@ void startMenu() {
       wttdAdd("",2,0, "", 3, "");
       textBlinkIntervalEnabledState = true;
     }
-
-    
   }
+
+  if(currentMillis - previousMillis >= ledColorInterval){
+    previousMillis = currentMillis;
+    colorFlow();
+  }
+
+  
   buttonPushType = rotary.pushType(1500);
   if (buttonPushType == 2) {
     wttd(welcomeLine, 0, centerX(welcomeLine), "-> Settings (3)", 1, 0);

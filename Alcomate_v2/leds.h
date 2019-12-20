@@ -6,10 +6,14 @@
 
 
 static uint16_t i, j;
+
 static int br = 100;
 static int pix = 0;
+static int ledColorInterval = 50;
+
 static bool up = false;
 static bool down = true;
+
 
 Adafruit_NeoPixel pixels(9, 12, NEO_RGB + NEO_KHZ800);
 
@@ -58,14 +62,10 @@ void colorFlow() {
     j++;
   }
 
-  if (i == pixels.numPixels()) {
-    i = 0;
-  } else {
-    i++;
+  for (int a = 0; a <= pixels.numPixels(); a++)
+  {
+    pixels.setPixelColor(a, Wheel((a + j) & 255));
   }
-
-  delay(10);
-  pixels.setPixelColor(i, Wheel((i + j) & 255));
   pixels.show();
 }
 

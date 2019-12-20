@@ -6,6 +6,10 @@
 
 static int maxX = 20;
 static int maxY = 4;
+static int textBlinkInterval = 1000;
+
+static bool textBlinkIntervalEnabledState = true;
+
 LiquidCrystal_I2C lcd(0x27, maxX, maxY);
 
 int centerX(String a) {
