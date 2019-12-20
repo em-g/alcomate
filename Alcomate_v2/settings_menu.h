@@ -152,13 +152,27 @@ void setPump() {
   pixels.setPixelColor(9, 255, 255, 0);
   pixels.show();
   rotDet = rotary.rotate();
+  bool drinkExisting = false;
   if ((rotDet == cw) && (chosenOption < (amountOfFluids - 1))) {
     chosenOption++;
-    wttd(pumpsettings[chosenPump - 1], 0, centerX(pumpsettings[chosenPump - 1]), "= " + fluids[chosenOption], 1, 0);
+    if (fluids[chosenOption] == pumpContent[chosenPump - 1]) drinkExisting = true;
+
+    if (drinkExisting) {
+      wttd(pumpsettings[chosenPump - 1], 0, centerX(pumpsettings[chosenPump - 1]), "= " + fluids[chosenOption] + " *", 1, 0);
+    } else {
+      wttd(pumpsettings[chosenPump - 1], 0, centerX(pumpsettings[chosenPump - 1]), "= " + fluids[chosenOption], 1, 0);
+    }
   }
   if ((rotDet == ccw) && (chosenOption > 0)) {
     chosenOption--;
-    wttd(pumpsettings[chosenPump - 1], 0, centerX(pumpsettings[chosenPump - 1]), "= " + fluids[chosenOption], 1, 0);
+
+    if (fluids[chosenOption] == pumpContent[chosenPump - 1]) drinkExisting = true;
+
+    if (drinkExisting) {
+      wttd(pumpsettings[chosenPump - 1], 0, centerX(pumpsettings[chosenPump - 1]), "= " + fluids[chosenOption] + " *", 1, 0);
+    } else {
+      wttd(pumpsettings[chosenPump - 1], 0, centerX(pumpsettings[chosenPump - 1]), "= " + fluids[chosenOption], 1, 0);
+    }
   }
 
   buttonPushed = rotary.push();
@@ -166,6 +180,15 @@ void setPump() {
     if (fluids[chosenOption] == backCommando) {
       wttd("PUMPSETTINGS", 0, centerX("PUMPSETTINGS"), "-> " + pumpsettings[0], 1, 0);
       menulvl = 91;
+      chosenOption = 0;
+    } else if (fluids[chosenOption] == noContent) {
+      pumpContent[chosenPump - 1] = "";
+      wttd(pumpsettings[chosenPump - 1], 0, centerX(pumpsettings[chosenPump - 1]), "= " + fluids[chosenOption] + " *", 1, 0);
+      delay(1500);
+      wttd("PUMPSETTINGS", 0, centerX("PUMPSETTINGS"), "-> " + pumpsettings[0], 1, 0);
+      menulvl = 91;
+
+      chosenPump = 0;
       chosenOption = 0;
     } else {
       pumpContent[chosenPump - 1] = fluids[chosenOption];

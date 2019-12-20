@@ -21,6 +21,13 @@ void wttd(String line1, int pos1y, int pos1x, String line2, int pos2y, int pos2x
   lcd.print(line2);
 }
 
+void wttdAdd(String line1, int pos1y, int pos1x, String line2, int pos2y, int pos2x) {
+  lcd.setCursor(pos1x, pos1y);
+  lcd.print(line1);
+  lcd.setCursor(pos2x, pos2y);
+  lcd.print(line2);
+}
+
 void wttd(String line1, int pos1y, int pos1x, int line2, int pos2y, int pos2x) {
   lcd.clear();
   lcd.setCursor(pos1x, pos1y);
@@ -32,7 +39,7 @@ void wttd(String line1, int pos1y, int pos1x, int line2, int pos2y, int pos2x) {
 void drinkNotConfigured(String drinkName) {
   wttd("-> " + drinkName, 0, centerX("-> " + drinkName), "not configured", 1, 1);
   pulse(255, 0, 0);
-  delay(2000);
+  delay(800);
 }
 
 void initDisplay() {

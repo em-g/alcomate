@@ -4,6 +4,7 @@ static String welcomeLine = "ALCOMATE";
 static String backCommando = "GO BACK";
 static String mixer = "Mixer only";
 static String liquor = "Liquor only";
+static String noContent = "--NONE--";
 static String chosenSetting;
 static String chosenDrink;
 
@@ -117,6 +118,7 @@ static String cleaner[] = {
   backCommando
 };
 static String fluids[] = {
+  noContent,
   "Cola",
   "Energy",
   "Gin",

@@ -4,8 +4,30 @@
 
 #include "toolbox.h"
 
+static int previousMillis = 0;
+static int textBlinkInterval = 1000;
+static bool textBlinkIntervalEnabledState = true;
+
 void startMenu() {
+  int currentMillis = millis();
   colorFlow();
+
+  if(currentMillis - previousMillis >= textBlinkInterval){
+    previousMillis = currentMillis;
+
+    if (textBlinkIntervalEnabledState){
+      wttd(welcomeLine, 0, centerX(welcomeLine), "", 0, 0);
+      wttdAdd("",2,0, "press to start", 3, centerX("press to start"));
+      textBlinkIntervalEnabledState = false;
+    }
+    else{
+      wttd(welcomeLine, 0, centerX(welcomeLine), "", 0, 0);
+      wttdAdd("",2,0, "", 3, "");
+      textBlinkIntervalEnabledState = true;
+    }
+
+    
+  }
   buttonPushType = rotary.pushType(1500);
   if (buttonPushType == 2) {
     wttd(welcomeLine, 0, centerX(welcomeLine), "-> Settings (3)", 1, 0);
@@ -85,8 +107,7 @@ void drinkSelected() {
       smallDose("shot", getShotPump(chosenDrink), smallDoseAmount);
     } else if ((mixRel[chosenOption] != mixer) && (mixRel[chosenOption] != liquor)) {
       globalflag = true;
-      delay(300);
-      drinkAndRelMixSelected(chosenDrink, chosenOption);
+      checkForNonAlcoholicDrink(chosenDrink, chosenOption);
       chosenOption = 0;
     }
   }

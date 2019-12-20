@@ -69,8 +69,8 @@ void pumpDos(int shotPump, int mixPump, double shotDelay, double mixDelay) {
   delay(1000);
   lcd.clear();
 
-  double starttime = millis(); // now static
-  double actualTime = millis(); // now based on runtime
+  double starttime = millis();
+  double actualTime = millis();
   double endtime = actualTime + shotDelay;
   double delayTime = mixDelay - shotDelay;
 
@@ -184,7 +184,7 @@ void smallDose(String diff, int pump, double timer) {
   digitalWrite(pump4[1], LOW);
 }
 
-void drinkAndRelMixSelected(String drinkName, int mixRelation) {
+void checkForNonAlcoholicDrink(String drinkName, int mixRelation) {
   int procent = mixRelInts[mixRelation];
   double shotSize = (sizeOfGlass * procent) / 100;
   double rest = sizeOfGlass - shotSize;
