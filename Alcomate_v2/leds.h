@@ -6,14 +6,11 @@
 
 
 static uint16_t i, j;
-
 static int br = 100;
 static int pix = 0;
-static int ledColorInterval = 50;
-
 static bool up = false;
 static bool down = true;
-
+unsigned long previousLedMillis = 0;
 
 Adafruit_NeoPixel pixels(9, 12, NEO_RGB + NEO_KHZ800);
 
@@ -55,18 +52,25 @@ void ledstrip() {
   pixels.setBrightness(100);
 }
 
-void colorFlow() {
-  if (j == 256) {
-    j = 0;
-  } else {
-    j++;
-  }
+void colorFlow(int ledInterval) {
+  if (millis() - previousLedMillis >= ledInterval) {
+    previousLedMillis = millis();
+    String aaa = "current = " + String(millis()) + ", interval = " + String(ledInterval) + ", previous = " + String(previousLedMillis);
+    Serial.println(aaa);
+    if (j == 256) j = 0;
+    else j++;
 
-  for (int a = 0; a <= pixels.numPixels(); a++)
-  {
-    pixels.setPixelColor(a, Wheel((a + j) & 255));
+    pixels.setPixelColor(0, Wheel((0 + j) & 255));
+    pixels.setPixelColor(1, Wheel((1 + j) & 255));
+    pixels.setPixelColor(2, Wheel((2 + j) & 255));
+    pixels.setPixelColor(3, Wheel((3 + j) & 255));
+    pixels.setPixelColor(4, Wheel((4 + j) & 255));
+    pixels.setPixelColor(5, Wheel((5 + j) & 255));
+    pixels.setPixelColor(6, Wheel((6 + j) & 255));
+    pixels.setPixelColor(7, Wheel((7 + j) & 255));
+    pixels.setPixelColor(8, Wheel((8 + j) & 255));
+    pixels.show();
   }
-  pixels.show();
 }
 
 void pulse(int r, int g, int b) {

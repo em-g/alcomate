@@ -6,9 +6,8 @@
 
 static int maxX = 20;
 static int maxY = 4;
-static int textBlinkInterval = 1000;
-
 static bool textBlinkIntervalEnabledState = true;
+unsigned long previousDisplayMillis = 0;
 
 LiquidCrystal_I2C lcd(0x27, maxX, maxY);
 
@@ -110,5 +109,33 @@ void lcdLevelIndicator(double condition, double dot_param) {
   } else if ((condition < (1 * dot_param)) && check[0]) {
     wttd("|                  |", 2, 0, "Press to cancel!", 3, centerX("Press to cancel!"));
     check[0] = false;
+  }
+}
+
+void clearLCDLine(int line) {
+  lcd.setCursor(0, line);
+  for (int n = 0; n < 20; n++) // 20 indicates symbols in line. For 2x16 LCD write - 16
+  {
+    lcd.print(" ");
+  }
+}
+
+void blinkingStartText(int textBlinkInterval) {
+  unsigned long currentDisplayMillis = millis();
+
+  if (currentDisplayMillis - previousDisplayMillis >= textBlinkInterval) {
+    previousDisplayMillis = currentDisplayMillis;
+
+    switch (textBlinkIntervalEnabledState) {
+    case true:
+      wttdAdd("", 2, 0, "press to start", 3, centerX("press to start"));
+      textBlinkIntervalEnabledState = false;
+      break;
+    default:
+      clearLCDLine(2);
+      clearLCDLine(3);
+      textBlinkIntervalEnabledState = true;
+      break;
+    }
   }
 }

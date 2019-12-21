@@ -50,7 +50,7 @@ void settingsstartMenu() {
       chosenOption = 0;
     } else if (settings[chosenOption] == "Flow counter") {
       String displayCounter = String(drinksCounter[0]) + "x " + String(drinks[0]);
-      wttd("FLOW COUNTER", 0, centerX("FLOW COUNTER"), "-> " + displayCounter, 1, 0);
+      wttd("FLOW COUNTER", 0, centerX("FLOW COUNTER"), displayCounter, 1, 0);
       menulvl = 96;
       chosenSetting = settings[chosenOption];
       chosenOption = 0;
@@ -295,17 +295,17 @@ void showFlowCounter() {
 
   if ((rotDet == cw) && (chosenOption < (amountOfDrinks - 1)) && (drinks[chosenOption + 1] == backCommando)) {
     chosenOption++;
-    wttd("FLOW COUNTER", 0, centerX("FLOW COUNTER"), "-> " + backCommando, 1, 0);
+    wttd("FLOW COUNTER", 0, centerX("FLOW COUNTER"), backCommando, 1, 0);
   } else if ((rotDet == cw) && (chosenOption < (amountOfDrinks - 1))) {
     chosenOption++;
     String displayCounter = String(drinksCounter[chosenOption]) + "x " + String(drinks[chosenOption]);
-    wttd("FLOW COUNTER", 0, centerX("FLOW COUNTER"), "-> " + displayCounter, 1, 0);
+    wttd("FLOW COUNTER", 0, centerX("FLOW COUNTER"), displayCounter, 1, 0);
   }
 
   if ((rotDet == ccw) && (chosenOption > 0)) {
     chosenOption--;
     String displayCounter = String(drinksCounter[chosenOption]) + "x " + String(drinks[chosenOption]);
-    wttd("FLOW COUNTER", 0, centerX("FLOW COUNTER"), "-> " + displayCounter, 1, 0);
+    wttd("FLOW COUNTER", 0, centerX("FLOW COUNTER"), displayCounter, 1, 0);
   }
   buttonPushed = rotary.push();
   if (buttonPushed == 1) {

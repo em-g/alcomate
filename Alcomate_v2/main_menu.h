@@ -4,42 +4,13 @@
 
 #include "toolbox.h"
 
-static int previousMillis = 0;
 
 void startMenu() {
-  int currentMillis = millis();
+  colorFlow(80);
+  blinkingStartText(600);
 
-  if(currentMillis - previousMillis >= textBlinkInterval){
-    previousMillis = currentMillis;
-
-    if (textBlinkIntervalEnabledState){
-      wttd(welcomeLine, 0, centerX(welcomeLine), "", 0, 0);
-      wttdAdd("",2,0, "press to start", 3, centerX("press to start"));
-      textBlinkIntervalEnabledState = false;
-    }
-    else{
-      wttd(welcomeLine, 0, centerX(welcomeLine), "", 0, 0);
-      wttdAdd("",2,0, "", 3, "");
-      textBlinkIntervalEnabledState = true;
-    }
-  }
-
-  if(currentMillis - previousMillis >= ledColorInterval){
-    previousMillis = currentMillis;
-    colorFlow();
-  }
-
-  
   buttonPushType = rotary.pushType(1500);
   if (buttonPushType == 2) {
-    wttd(welcomeLine, 0, centerX(welcomeLine), "-> Settings (3)", 1, 0);
-    delay(400);
-    wttd(welcomeLine, 0, centerX(welcomeLine), "-> Settings (2)", 1, 0);
-    delay(400);
-    wttd(welcomeLine, 0, centerX(welcomeLine), "-> Settings (1)", 1, 0);
-    delay(400);
-    wttd(welcomeLine, 0, centerX(welcomeLine), "-> Settings (0)", 1, 0);
-
     menulvl = 90;
     chosenOption = 0;
     wttd("SETTINGS", 0, centerX("SETTINGS"), "-> " + settings[0], 1, 0);
@@ -52,7 +23,7 @@ void startMenu() {
 }
 
 void drinkMenu() {
-  colorFlow();
+  colorFlow(80);
   rotDet = rotary.rotate();
   if ((rotDet == cw) && (chosenOption < (amountOfDrinks - 1))) {
     chosenOption++;

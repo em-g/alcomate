@@ -16,6 +16,7 @@
 
 int ledI = 0;
 void setup() {
+  rotary.setErrorDelay(5);
   pulldown();
   initDisplay();
   ledstrip();
